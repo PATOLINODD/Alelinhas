@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="./styles/flex.css">
+    <title>Alelinhas</title>
+</head>
+
+<body>
+    <canvas id="myCanvas"></canvas>
+    <!-- INIT THE UTILS -->
+    <script src="./scripts/utils/random.js"></script>
+    <script src="./scripts/utils/Grid.js"></script>
+    <!-- INIT EVERY ENTITY CLASS -->
+    <script src="./scripts/entities/AbstractEntity.js"></script>
+    <script src="./scripts/entities/AbstractBall.js"></script>
+    <script src="./scripts/entities/AbstractProjectile.js"></script>
+    <script src="./scripts/entities/Smiley-Soul.js"></script>
+    <script src="./scripts/entities/smiley-face.js"></script>
+    <!-- INIT THE CANVAS -->
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const g = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    </script>
+    <script src="./scripts/controllers/animation-controller.js"></script>
+    <script src="./index.js"></script>
+
+    <!-- INIT UI SCRIPTS -->
+    <script src="./scripts/UI/menu.js"></script>
+    <script src="./scripts/UI/components/button.js"></script>
+
+</body>
+
+</html>

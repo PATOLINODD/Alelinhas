@@ -1,0 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    min-height: 100vh;
+    background-color: var(--bg-dark);
+    color: var(--text);
+    overflow: hidden;
+}
+
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.5s;
+}
+
+::view-transition-new(root) {
+    animation-name: scale-up;
+}
+
+::view-transition-old(root) {
+    animation-name: scale-down;
+}
+
+
+@keyframes scale-up {
+    from {
+        scale: 0;
+    }
+}
+
+@keyframes scale-down {
+    to {
+        scale: 0;
+    }
+}
+
+
+:root {
+    view-transition-name: root;
+    --bg-dark: hsl(0, 0%, 0%);
+    --bg: hsl(0, 0%, 5%);
+    --bg-light: hsl(0, 0%, 10%);
+    --text: hsl(0, 0%, 90%);
+    --text-muted: hsl(0, 0%, 70%);
+    --border-color: hsl(30, 90%, 60%);
+    --border-color-light: hsl(0, 0%, 30%);
+    --border-color-dark: hsl(0, 0%, 10%);
+    --border-radius: 5px;
+    --circle: 5rem;
+    --circle-radius: 50%;
+    --border-width: 1px;
+    --border-style: solid;
+    --border: var(--border-width) var(--border-style) var(--border-color);
+    --border-light: var(--border-width) var(--border-style) var(--border-color-light);
+    --border-dark: var(--border-width) var(--border-style) var(--border-color-dark);
+}
