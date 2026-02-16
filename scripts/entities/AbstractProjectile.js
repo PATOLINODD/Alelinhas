@@ -10,11 +10,11 @@ class AbstractProjectile extends AbstractBall {
         this.preRender();
     }
 
-    update() {
-        this.x += this.dx;
-        this.y += this.dy;
-        this.alpha *= this.friction;
-        if (this.alpha <= 0) {
+    update(timeScale = 1) {
+        this.x += this.dx * timeScale;
+        this.y += this.dy * timeScale;
+        this.alpha *= Math.pow(this.friction, timeScale);
+        if (this.alpha <= 0.01) { // Threshold for cleanup
             this.alpha = 0;
             particles.splice(particles.indexOf(this), 1);
         }

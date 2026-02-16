@@ -6,9 +6,9 @@ class SmileySoul extends AbstractProjectile {
         this.friction = 0.70;
     }
 
-    update() {
-        this.alpha *= this.friction;
-        if (this.alpha <= 0) {
+    update(timeScale = 1) {
+        this.alpha *= Math.pow(this.friction, timeScale);
+        if (this.alpha <= 0.01) {
             this.alpha = 0;
             particles.splice(particles.indexOf(this), 1);
         }

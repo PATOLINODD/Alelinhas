@@ -82,11 +82,11 @@ class Face extends AbstractBall {
         // g.fill();
     }
 
-    update() {
-        this.angle += this.rotationSpeed;
+    update(timeScale = 1) {
+        this.angle += this.rotationSpeed * timeScale;
         this.angle = this.angle % this.fullCircle;
-        this.x += this.vx;
-        this.y += this.vy;
+        this.x += this.vx * timeScale;
+        this.y += this.vy * timeScale;
         // this.vy *= this.friction;
         // this.vx *= this.friction;
 
