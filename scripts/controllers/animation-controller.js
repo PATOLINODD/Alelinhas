@@ -10,15 +10,30 @@ const bgBufferG = bgBuffer.getContext('2d');
 let isClicked = false;
 let [mx, my] = [0, 0]
 
+let last = 0;
+
 function run() {
-    update();
+    const now = Date.now();
+    if (!last) last = now;
+    const dt = (now - last) / 1000;
+    last = now;
+
+    const timeScale = dt * 60; // Normalize to 60 FPS
+
+    // Cap dt to prevent huge jumps (e.g., when tab is inactive)
+    if (dt > 0.1) {
+        update(1); // Fallback to normal speed for long pauses
+    } else {
+        update(timeScale);
+    }
+
     checkCollisions();
     render(g);
     requestAnimationFrame(run)
 }
 
 let timer = 0;
-function update() {
+function update(timeScale = 1) {
     if (isClicked) {
         timer++;
         if (timer >= 5) {
@@ -27,7 +42,7 @@ function update() {
         }
     }
     for (let face of faces) {
-        if (face) face.update();
+        if (face) face.update(timeScale);
     }
 
     for (let particle of particles) {
