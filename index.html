@@ -43,15 +43,26 @@
             class WhooshAnimation {
                 constructor(element) {
                     this.element = element;
+                    this.animation = null;
                 }
 
                 animate(keyFrames, options) {
-                    const animation = this.element.animate(keyFrames, options);
-                    animation.onfinish = () => {
-                        animation.commitStyles();
+                    this.animation = this.element.animate(keyFrames, options);
+                    this.animation.onfinish = () => {
+                        this.animation.commitStyles();
                     }
                 }
+
+                reverse() {
+                    if (this.animation) this.animation.reverse();
+                }
+
+
             }
+
+            let lists = document.querySelectorAll('.slide-up-in');
+            const animations = [];
+
 
             const audioEle = document.querySelector('audio');
             const audioContext = new AudioContext();
@@ -70,31 +81,47 @@
             })
 
             document.querySelectorAll('button').forEach(button => {
-                button.addEventListener('click', () => {
+                button.addEventListener('click', async () => {
                     const redirect = button.dataset.redirect;
                     window.location.href = redirect;
                 })
             })
 
-            let lists = document.querySelectorAll('.slide-up-in');
             for (let i = lists.length - 1; i >= 0; i--) {
                 const li = lists[i];
-                const delay = Number(li.dataset.delay)
                 li.style.zIndex = lists.length - i + 1;
                 const whoosh = new WhooshAnimation(li);
-                whoosh.animate(
-                    {
-                        transform: ['translateY(400px)', 'translateY(-10px)', 'translateY(0)'],
-                        opacity: [0, 0.5, 1]
+                animations.push({ el: li, ani: whoosh });
+            }
+            enter().in();
+
+            function enter() {
+                return {
+                    in: () => {
+                        for (const { el, ani } of animations) {
+                            const delay = Number(el.dataset.delay)
+                            ani.animate(
+                                {
+                                    transform: ['translateY(400px)', 'translateY(-10px)', 'translateY(0)'],
+                                    opacity: [0, 0.5, 1]
+                                },
+                                {
+                                    duration: 810,
+                                    easing: 'ease-out',
+                                    delay: delay * 1000
+                                }
+                            );
+                        }
                     },
-                    {
-                        duration: 810,
-                        easing: 'ease-out',
-                        delay: delay * 1000
+                    out: () => {
+                        for (const { el, ani } of animations) {
+                            ani.reverse();
+                        }
                     }
-                );
+                }
             }
         })
+
 
 
     </script>
