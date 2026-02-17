@@ -8,20 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
         bgMusic.loop = true; // Ensure the music repeats
         bgMusic.volume = 0.051;
     })
-    document.addEventListener('mousedown', (e) => {
-        [mx, my] = [e.clientX, e.clientY];
+    const handleInput = (x, y) => {
+        [mx, my] = [x, y];
         for (let i = 0; i < faces.length; i++) {
             const face = faces[i];
-            const [x, y] = [Math.pow(mx - face.x, 2), Math.pow(my - face.y, 2)];
-            const distance = Math.sqrt(x + y);
+            const [dx, dy] = [Math.pow(mx - face.x, 2), Math.pow(my - face.y, 2)];
+            const distance = Math.sqrt(dx + dy);
 
-            //I added isClicked here to prevent the click spam when the entities multiply
-            //When the entities multiply, the click event is triggered multiple times
-            //So an effect that looks like the entities multiply multiple times is 
-            //just because the click event is triggered multiple times while the mouse is on the entity
-            //using click event, the same effect happens, additionally the click event is triggered only when the 
-            //mouse button is down and up while the mouse is on the entity, but if you press the mouse button while on the
-            //entity, and release the mouse button after the entity moved away from the cursor, the event is not triggered.
             if (distance <= face.r && !isClicked) {
                 const popSound = new Audio('./assets/sounds/sound-effects/pop.mp3');
                 const coinSound = new Audio('./assets/sounds/sound-effects/8bit-coin-sound-05.mp3');
@@ -40,5 +33,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
-    })
+    }
+
+    document.addEventListener('mousedown', (e) => {
+        handleInput(e.clientX, e.clientY);
+    });
+
+    document.addEventListener('touchstart', (e) => {
+        // e.preventDefault(); // Prevent default touch actions like scrolling
+        handleInput(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: false });
+
+    document.addEventListener('touchmove', (e) => {
+        handleInput(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: false });
+
+    document.body.addEventListener('touchstart', () => {
+        if (bgMusic.paused) {
+            bgMusic.play();
+            bgMusic.loop = true;
+            bgMusic.volume = 0.051;
+        }
+    }, { once: true });
 })
