@@ -10,10 +10,13 @@
 </head>
 
 <body>
+    <audio id="background-music" src="./assets/sounds/background-musics/lofi_background.mp3" autoplay loop></audio>
     <canvas id="myCanvas"></canvas>
     <!-- INIT THE UTILS -->
     <script src="./scripts/utils/random.js"></script>
     <script src="./scripts/utils/Grid.js"></script>
+    <script src="./scripts/utils/local.js"></script>
+    <script src="./scripts/utils/audio.js"></script>
     <!-- INIT EVERY ENTITY CLASS -->
     <script src="./scripts/entities/AbstractEntity.js"></script>
     <script src="./scripts/entities/AbstractBall.js"></script>
@@ -27,12 +30,18 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     </script>
+    <!-- INIT CONTROLLERS -->
     <script src="./scripts/controllers/animation-controller.js"></script>
+    <script src="./scripts/controllers/audio-controller.js"></script>
     <script src="./index.js"></script>
 
-    <!-- INIT UI SCRIPTS -->
+    <!-- INIT UI -->
     <script src="./scripts/UI/menu.js"></script>
     <script src="./scripts/UI/components/button.js"></script>
+
+    <script>
+
+    </script>
 
 </body>
 

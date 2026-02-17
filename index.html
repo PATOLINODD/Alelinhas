@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="./styles/menu.css">
     <link rel="stylesheet" href="./styles/flex.css">
     <link rel="stylesheet" href="./styles/components/button.css">
+    <link rel="stylesheet" href="./styles/components/popover.css">
     <title>Alelinhas</title>
 </head>
 
 <body>
-    <audio src="./assets/sounds/background-musics/lofi_background.mp3" autoplay loop></audio>
+    <audio id="background-music" src="./assets/sounds/background-musics/lofi_background.mp3" autoplay loop></audio>
     <div class="menu flex col justify-evenly align-center slide-up-in" data-delay="0.4">
         <h2 class="slide-up-in" data-delay="1.5">Alelinhas Game</h2>
         <ul class="flex col justify-center align-center gap-1">
@@ -25,9 +26,8 @@
             <li class="slide-up-in" data-delay="0.9">
                 <button id="iventory" data-redirect="iventory.html">Alelinhas Salvas</button>
             </li>
-            <li class="flex col justify-center align-center slide-up-in" data-delay="0.7">
-                <label for="volume">Volume</label>
-                <input type="range" name="volume" id="volume" value="0.1" max="2" step="0.01">
+            <li class="slide-up-in" data-delay="0.7">
+                <input type="button" value="Opções" popovertarget="options">
             </li>
             <li class="slide-up-in" data-delay="0.5">
                 <button id="aboutme" data-redirect="aboutme.html">Quem Fez Esse Jogo?</button>
@@ -35,51 +35,31 @@
         </ul>
     </div>
 
+    <!-- INIT UTILS -->
     <script src="./scripts/utils/random.js"></script>
+    <script src="./scripts/utils/audio.js"></script>
+    <script src="./scripts/utils/local.js"></script>
+
+    <!-- INIT UI -->
     <script src="./scripts/UI/components/button.js"></script>
+
+    <!-- INIT ANIMATIONS -->
+    <script src="./scripts/animations/whoosh-animation.js"></script>
+    <script src="./scripts/animations/finish-animations.js"></script>
+
+    <!-- INIT CONTROLLERS -->
+    <script src="./scripts/controllers/audio-controller.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
+            let lists = document.querySelectorAll('.slide-up-in');// take the element from the dom
 
-            class WhooshAnimation {
-                constructor(element) {
-                    this.element = element;
-                    this.animation = null;
-                }
+            const audioContext = audioController(document.querySelector('#background-music'), document.querySelector('#volume'));
 
-                animate(keyFrames, options) {
-                    this.animation = this.element.animate(keyFrames, options);
-                    this.animation.onfinish = () => {
-                        this.animation.commitStyles();
-                    }
-                }
-
-                reverse() {
-                    if (this.animation) this.animation.reverse();
-                }
-
-
-            }
-
-            let lists = document.querySelectorAll('.slide-up-in');
-            const animations = [];
-
-
-            const audioEle = document.querySelector('audio');
-            const audioContext = new AudioContext();
-            const track = audioContext.createMediaElementSource(audioEle);
-            const gainNode = audioContext.createGain();
-            const volumeControl = document.querySelector('#volume');
-            gainNode.gain.value = volumeControl.value;
-            track.connect(gainNode).connect(audioContext.destination);
-            volumeControl.addEventListener('input', () => {
-                gainNode.gain.value = volumeControl.value;
-            })
             document.addEventListener('click', () => {
-                console.log(audioContext.state);
-
-                if (audioContext.state === "suspended") audioContext.resume();
+                if (audioContext.state === "suspended") audioContext.resume(); //It is not playing here when the user clicks on the DOM. I need to understand why
             })
 
+            // Redirect the user to the page that the button is pointing to.
             document.querySelectorAll('button').forEach(button => {
                 button.addEventListener('click', async () => {
                     const redirect = button.dataset.redirect;
@@ -87,38 +67,13 @@
                 })
             })
 
+            // Begin the animation and store it into the animations array.
             for (let i = lists.length - 1; i >= 0; i--) {
                 const li = lists[i];
                 li.style.zIndex = lists.length - i + 1;
-                const whoosh = new WhooshAnimation(li);
+                const delay = Number(li.dataset.delay);
+                const whoosh = whooshAnimation(li, delay);
                 animations.push({ el: li, ani: whoosh });
-            }
-            enter().in();
-
-            function enter() {
-                return {
-                    in: () => {
-                        for (const { el, ani } of animations) {
-                            const delay = Number(el.dataset.delay)
-                            ani.animate(
-                                {
-                                    transform: ['translateY(400px)', 'translateY(-10px)', 'translateY(0)'],
-                                    opacity: [0, 0.5, 1]
-                                },
-                                {
-                                    duration: 810,
-                                    easing: 'ease-out',
-                                    delay: delay * 1000
-                                }
-                            );
-                        }
-                    },
-                    out: () => {
-                        for (const { el, ani } of animations) {
-                            ani.reverse();
-                        }
-                    }
-                }
             }
         })
 

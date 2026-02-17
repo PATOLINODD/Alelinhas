@@ -2,13 +2,11 @@ startApp();
 run();
 document.addEventListener('DOMContentLoaded', () => {
 
-    const bgMusic = new Audio('./assets/sounds/background-musics/lofi_background.mp3');
+    const { audioContext } = audio(document.querySelector('#background-music'));
     document.body.addEventListener('click', () => {
-        bgMusic.play();
-        bgMusic.loop = true; // Ensure the music repeats
-        bgMusic.volume = 0.051;
+        if (audioContext.state === "suspended") audioContext.resume();
     })
-    const handleInput = (x, y) => {
+    const handleInput = (x, y) => { // handling input event, such clicks on the screen.
         [mx, my] = [x, y];
         for (let i = 0; i < faces.length; i++) {
             const face = faces[i];
@@ -49,10 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: false });
 
     document.body.addEventListener('touchstart', () => {
-        if (bgMusic.paused) {
-            bgMusic.play();
-            bgMusic.loop = true;
-            bgMusic.volume = 0.051;
-        }
+        if (audioContext.state === "suspended") audioContext.resume();
     }, { once: true });
 })
