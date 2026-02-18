@@ -1,0 +1,42 @@
+dialog#options {
+    width: 90vw;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-flow: column;
+    background-color: var(--bg-light);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    margin: auto;
+    z-index: 999;
+    transform: translateY(900px);
+}
+
+::backdrop {
+    backdrop-filter: blur(3px);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#close-options {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border: none;
+    background-color: transparent;
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    border-radius: var(--circle);
+    width: fit-content;
+    cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    dialog#options {
+        width: 500px;
+        min-width: 500px;
+    }
+}
