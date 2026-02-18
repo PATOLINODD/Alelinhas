@@ -1,5 +1,3 @@
-const lists = document.querySelectorAll('li');
-
 class Animations {
     constructor(ele) {
         this.ele = document.querySelector(ele);
@@ -23,14 +21,3 @@ class Animations {
         this.currentAnimation.reverse();
     }
 }
-
-lists.forEach(list => {
-    const animation = new Animations(`.${list.dataset.slide}`);
-    list.addEventListener('mouseenter', () => {
-        animation.play();
-    });
-
-    list.addEventListener("mouseleave", () => {
-        animation.stop();
-    });
-});
